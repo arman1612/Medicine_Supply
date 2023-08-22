@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+
+  <script>
+    function loadFile(ref) {
+      var image = document.getElementById('prev');
+      image.src = URL.createObjectURL(ref.files[0]);
+  };
+
+  function loadFile2(ref) {
+      var image = document.getElementById('prev2');
+      image.src = URL.createObjectURL(ref.files[0]);
+  };
+</script>
+  <script>
+
+    $(document).ready(function(){
+
+      var activeUser=localStorage.getItem("activeUser");
+      $("#email").val(activeUser).prop("readonly",true);
+     // alert(activeUser);
+        $("#btnsrch").click(function(){
+            var url="/getkuch?email="+$("#email").val();
+            $.getJSON(url,function(responseKuchJSONAryObject){
+                if(responseKuchJSONAryObject.length==0)
+                alert("INVALID");
+                else{
+                 //   alert(JSON.stringify(responseKuchJSONAryObject));
+                    $("#email").val(responseKuchJSONAryObject[0].email);
+                    $("#dname").val(responseKuchJSONAryObject[0].name);
+                    $("#mobileid").val(responseKuchJSONAryObject[0].mobile);
+                    $("#idaddress").val(responseKuchJSONAryObject[0].address);
+                    $("#cityid").val(responseKuchJSONAryObject[0].city);
+                    $("#idproof").val(responseKuchJSONAryObject[0].prooftype);
+                    $("#timeid").val(responseKuchJSONAryObject[0].timings);
+                    $("#prev").prop("src","uploads/"+responseKuchJSONAryObject[0].proofpic);
+                    $("#prev2").prop("src","uploads/"+responseKuchJSONAryObject[0].profilepic);
+                    $("#hdn").val(responseKuchJSONAryObject[0].proofpic);
+                }
+            })
+
+
+        })
+    })
+  </script>
+  <body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid justify-content-center  ">
+          <a class="navbar-brand " href="#" >
+           <h3><span style="color: white;">
+            <img src="pics/logo5.png" style="height:30px; width: 30px; border-radius: 100px; " alt=""> DASH PROFILE
+           </span></h3>
+          </a>
+        </div>
+      </nav>
+      <div class="container">
+        <form class="row g-3" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="hdn" name="hdn">
+            <div class="form-floating col-md-6" style="margin-top: 30px;">
+                <input type="email" class="form-control" id="email" name="email" value="" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+              </div>
+            <div class="col-md-6" style="margin-top: 40px;">
+                <button type="button" class="btn btn-primary" id="btnsrch" name="btnsrch">SEARCH</button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="Name" name="dname" id="dname" value="" aria-label="First name">
+                </div>
+                <div class="col">
+                  <input type="tel" class="form-control" placeholder="Mobile Number" name="mobileid" id="mobileid" value="" aria-label="Last name">
+                </div>
+              </div>
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" value="" name="idaddress" id="idaddress" placeholder="1234 Main St">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="inputState"   class="form-label">CITY</label>
+              <select id="cityid" name="cityid" class="form-select">
+                <option selected>Choose...</option>
+                <option>bathinda</option>
+                <option>Ludhiana</option>
+                <option>Amritsar</option>
+                <option>Jalandhar</option>
+                <option>Patiala</option>
+                <option>Mohali</option>
+                <option>Khanna</option>
+                <option>Kapurthala</option>
+                <option>Barnala</option>
+              </select>
+                  </div>
+            </div>
+
+
+            
+          
+           
+           <div class="row g-3">
+            <div class="col-md-4">
+                <label for="validationCustom01" class="form-label">Select ID PROOF</label>
+                <input type="text" class="form-control" id="idproof" name="idproof" value="" required>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom01" class="form-label">CONTACT TIME</label>
+                <input type="time" class="form-control" id="timeid" name="timeid" value="" required>
+            </div> 
+         </div>
+              <div class="row g-3">
+                <div class="col mt-2">
+                    <label for="formFileDisabled" class="form-label">SELECT ID PROOF</label>
+                    <div class="col-md-12">
+                        <input type="file" name="proofpic" id="proofpic" accept=".jpg, .jpeg, .png" onchange="loadFile(this);">
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <img id="prev" name="prev" src="" width="100" height="100" alt="">
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <label for="formFileDisabled" class="form-label">SELECT PROFILE PIC</label>
+                    <div class="col-md-12">
+                        <input type="file" name="profilepic" id="profilepic" accept=".jpg, .jpeg, .png" onchange="loadFile2(this);">
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <img id="prev2" src="" name="prev2" width="100" height="100" alt="">
+                    </div>
+                </div>
+              </div>
+          
+            <div class="col-12">
+             <center>
+                <button type="submit" formaction="/save-donor-profile" class="btn btn-primary">SAVE</button>
+                <button type="submit" formaction="/update-donor-profile" class="btn btn-primary">UPDATE</button>
+  
+             </center>
+            </div>
+          </form>
+      </div>
+      <nav class="navbar bg-primary opacity-75 " >
+        <div class="container-fluid justify-content-center" >
+          <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+            <p>
+              <center><h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+              <!-- <span style="font-size: 10px; margin-top: -15px;"> -->
+                About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines | Affiliate Disclosure | Contact Us
+              <!-- </span> -->
+              <h6>
+                <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+              </h6>
+              </center>
+            </p>  
+          </span>
+        </div>
+      </nav>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

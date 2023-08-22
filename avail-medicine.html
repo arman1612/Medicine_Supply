@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <script>
+    
+    function loadFile(ref) {
+      var image = document.getElementById('prev');
+      image.src = URL.createObjectURL(ref.files[0]);
+  };
+  </script>
+  <script>
+    $(document).ready(function(){
+      var activeUser=localStorage.getItem("activeUser");
+      $("#email").val(activeUser).prop("readonly",true);
+    })
+  </script>
+  <body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid justify-content-center  ">
+          <a class="navbar-brand " href="#" >
+           <h3><span style="color: white;">
+            <img src="pics/logo5.png" style="height:30px; width: 30px; border-radius: 100px; " alt="">  Avail Medicine
+           </span></h3>
+          </a>
+        </div>
+      </nav>
+      <div class="container">
+        <form class="row g-3" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="hdn" name="hdn">
+            <div class="form-floating col-md-6" style="margin-top: 30px;">
+                <input type="email" class="form-control" id="email" name="email" value="me@gmail.com" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="row g-3">
+                <div class="col form-floating">
+                 <!-- <input type="text" class="form-control" placeholder="Medicine Name" name="medname" id="medname" value="" aria-label="medicine name" required> -->
+                 <input type="text" class="form-control" id="medname" name="medname" value="" placeholder="">
+                 <label for="floatingInput">MEDICINE NAME</label>
+                </div>
+                <div class="col">
+                  <div>
+                    <label for=""  style="margin-left:70px ;">Packing</label>
+                  </div>
+                 <div>
+                  <select name="packingid" id="packingid" style="margin-left: 70px;"  multiple ondblclick="doDelete(this);">
+                    <option value="none">Select</option>
+                        <option value="LIQUID">LIQUID</option>
+                        <option value="POUCH">POUCH</option>
+                        <option value="TABLETS">TABLETS</option>
+                        <option value="SYRUP">SYRUP</option>
+                </select>  
+                 </div>
+                </div>
+                <div class="col">
+                  <label for="validationCustom01" class="form-label">QUANTITY</label>
+                <input type="text" class="form-control" id="idquantity" name="idquantity" value="" required>
+                </div>
+              </div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                  <label for="validationCustom01" class="form-label">Expiry Date</label>
+                  <input type="date" class="form-control" id="dateid" name="dateid" value="" required>
+                </div>
+                  <div class="col-md-4" style="margin-left: 450px;">
+                    <label for="inputState"   class="form-label">Company</label>
+                    <input type="text" class="form-control" id="idcompany" name="idcompany" value="" required>
+                  </div>
+            </div>
+              <div class="row g-3">
+                <div class="col-md-4 mt-2">
+                  <label for="formFileDisabled" class="form-label">UPLOAD PIC</label>
+                    <div class="col-md-12">  
+                        <input type="file" name="proofpic" id="proofpic" accept=".jpg, .jpeg, .png" onchange="loadFile(this);" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="col-md-4 mt-2">
+                    <img id="prev" name="prev" src="" width="100" height="100" alt="">
+                </div>
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom01" class="form-label">DATE OF LIST</label>
+                  <input type="date" class="form-control" id="cdateid" name="cdateid" value="" required>
+                </div>
+              
+              </div>
+              <div class="row g-3">
+                <div class="col-md-12">
+                <label for="inputState"   class="form-label">DESCRIPTION</label>
+                    <input type="text area" class="form-control" id="desid" name="desid" value="" required>
+                  </div>
+              </div>
+          
+            <div class="col-12">
+             <center>
+                <button type="submit" formaction="/listing-process" class="btn btn-primary">LIST THE MEDICINE</button>
+                
+  
+             </center>
+            </div>
+          </form>
+      </div>
+      <nav class="navbar bg-primary opacity-75" >
+        <div class="container-fluid justify-content-center" >
+          <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+            <p>
+              <center><h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+              <!-- <span style="font-size: 10px; margin-top: -15px;"> -->
+                About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines | Affiliate Disclosure | Contact Us
+              <!-- </span> -->
+              <h6>
+                <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+              </h6>
+              </center>
+            </p>  
+          </span>
+        </div>
+      </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

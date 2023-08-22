@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="js/angular.min.js">   </script>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+ 
+
+  <script>
+    var moduleKuch=angular.module("myModule",[]);
+        moduleKuch.controller("myController",function($scope,$http)
+        {
+
+
+            $scope.jsonAddAry=[];
+            $scope.fetchCities=function()
+            {
+                $http.get("/fetchCities").then(fxSuccess,function(response){
+                    alert(JSON.stringify(response.data));
+                });
+                function fxSuccess(response)
+                   {
+                    //alert(JSON.stringify(response.data));
+                    $scope.jsonAddAry=response.data;
+                   }
+            }
+
+            $scope.fetchMedicine=function()
+            {
+              //  alert('control');
+                var city=document.getElementById("cityid").value;
+             $http.get("/fetchMedicine?cityx="+city).then(fxSuccess,function(response){
+                alert(JSON.stringify(response.data));
+             })  
+             function fxSuccess(response)
+                   {
+                   // alert(JSON.stringify(response.data));
+                    $scope.jsonAry=response.data;
+                   }
+            }
+
+            $scope.dosrchNow=function()
+            {
+                
+              //  alert("jhv");
+                var medicine=document.getElementById("medicineid").value;
+               
+                $http.get("/fetchSomeRecords?medicine="+medicine).then(fxSuccess,function(response){
+                        alert(JSON.stringify(response.data));
+                   });
+                   function fxSuccess(response)
+                   {
+                    //alert(JSON.stringify(response.data));
+                    $scope.json2Ary=response.data;
+                   }
+            }
+            $scope.fetchInfo=function()
+            {              
+              var email=document.getElementById("eid").value;
+                $http.get("/fetchInfo?emailid="+email).then(fxSuccess,function(response){
+                        alert(JSON.stringify(response.data));
+                   });
+                   function fxSuccess(response)
+                   {
+                    alert(JSON.stringify(response.data));
+                    $scope.json3Ary=response.data;
+                   }
+            }
+
+
+
+        })
+  </script>
+   </head>
+  <body ng-app="myModule" ng-controller="myController" ng-init=fetchCities();>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid justify-content-center  ">
+            <a class="navbar-brand " href="#">
+                <h3><span style="color: white;">
+                  <img src="pics/logo5.png" style="height:30px; width: 30px; border-radius: 100px; " alt="">  MEDS NEEDED</h3>
+            </a>
+        </div>
+    </nav>
+
+    <center>
+        <label for=""><h2>SEARCH MEDICINE HERE</h2></label>
+    </center>
+   <div class="container">
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <label for="inputState"   class="form-label">CITY</label>
+            <select id="cityid" ng-change="fetchMedicine();" ng-model="kuchbhi"  name="cityid" class="form-select" >   <!--tooooo  important-->
+                <option value="none">Select</option>
+                <option ng-repeat="obj in jsonAddAry" value="{{obj.city}}">{{obj.city}}</option>
+            </select>
+        </div>
+        <div class="col-md-4" style="margin-left: 300px;">
+            <label for="inputState"   class="form-label">MEDICINE</label>
+            <select id="medicineid" name="medicineid" class="form-select" >
+                <option ng-repeat="obj in jsonAry" value="{{obj.medicines}}">{{obj.medicines}}</option>
+            </select>
+        </div>
+    </div>
+   </div>
+   <center>
+    <button type="button" class="btn btn-outline-primary" ng-click=dosrchNow();>SEEK DONORS</button>
+</center>
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-3"  ng-repeat="obj in json2Ary" >
+                <div class="card">
+                    <img height="200px" style="border-radius:100px ;" src="uploads/{{obj.pic}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <center>
+                        <!-- <h5 class="card-title" id="">Email: {{obj.email}}</h5> -->
+                        <!-- <label for="" id="eid" value="{{obj.email}}"> {{obj.email}}</label> -->
+                        <input type="text" id="eid" value="{{obj.email}}" readonly style="outline: none; border: none; font-size: 30px;">
+                      <h5 class="card-title">Company:{{obj.company}}</h5>
+                      <h5 class="card-title">Packing:{{obj.packing}}</h5>
+                      <h5 class="card-title">Quantity{{obj.qty}}</h5>
+                      </center>
+                      <button type="button"  ng-model="kejf" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" ng-click="fetchInfo();" data-bs-whatever="@mdo">CONTACT DONOR</button>
+                      <div class="modal fade" id="exampleModal"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog " >
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">INFO</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body"  >
+                             <div ng-repeat="obj2  in json3Ary" class="container justify-content-center">
+                              <form  method="GET" >
+                                <div class="mb-2" >
+                                 NAME:{{obj2.name}}
+                                </div>
+                                <div class="mb-2">
+                                Contact:{{obj2.mobile}}
+                                </div>
+                                <div class="mb-2">
+                                    Address:{{obj2.address}}
+                                </div>
+
+                             </div>
+                                
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn1">Signup</button>
+                           
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+    <!-- <nav class="navbar bg-primary opacity-75" style="position:fixed; bottom: 0; width: 100%;">
+      <div class="container-fluid justify-content-center" >
+        <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+          <p>
+            <center><h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+            <span style="font-size: 10px; margin-top: -15px;">
+              About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines | Affiliate Disclosure | Contact Us
+            </span>
+            <h6>
+              <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+            </h6>
+            </center>
+          </p>  
+        </span>
+      </div>
+    </nav> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>

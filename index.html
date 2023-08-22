@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <title>Medical Trading</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script>
+        function loadFile(ref) {
+          var image = document.getElementById('prev');
+          image.src = URL.createObjectURL(ref.files[0]);
+      };
+  </script>
+   <style>
+    #btn,#btn1{
+        background-color: aquamarine;
+        color: black;
+        margin: auto;
+    }
+   </style>
+   
+   
+   <script>
+    $(document).ready(function(){
+        
+        $("#btn1").click(function(){
+            // alert("qjhjgfadj");
+            var url="/signup-process?txtemail="+$("#txtemail").val()+"&&pwd="+$("#pwd").val()+"&&utype="+$("#utype").val();
+            $.get(url,function(respKuchStr){
+                alert(respKuchStr);
+            })
+        })
+
+
+        $("#btn").click(function(){
+            var url="/login-process?lgemail="+$("#lgemail").val()+"&&lgpwd="+$("#lgpwd").val();
+            $.getJSON(url,function(jsonary){
+         
+              if(jsonary.length==0)
+              {
+                alert("INVALID");
+              }
+              else
+              {
+                localStorage.setItem("activeUser",$("#lgemail").val())
+                
+                if(jsonary[0].utype=="Donor")
+                {
+                  window.location.replace("/donor.html");
+                }
+                else
+                {
+                  window.location.replace("/needy.html");
+                }
+              }
+
+            })
+        })
+
+        $("#txtemail").blur(function(){
+        
+        //AJAX request Firing
+        var url="/chkEmailKuch?txtemail="+$("#txtemail").val();
+        $.get(url,function(respKuchStr){
+          $("#errEmail").html(respKuchStr);
+        });
+
+      });
+
+
+
+
+    })
+    </script>
+  </head>
+  <body>
+  <nav class="navbar bg-primary fixed-top">
+    <div class="m-2">
+      <span class="navbar-brand mb-0 h1" style="color: white; font-size: 30px;"> <img src="pics/logo5.png" style="height:30px; width: 30px; border-radius: 100px; " alt=""> Medicine Trading</span>
+    </div>
+    <div>
+      <form class="container-fluid gap-3 d-flex justify-content-end">
+        <button type="button" class="btn btn-primary "   data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Sign Up</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@fat">Login</button>
+      </form>
+    </div>
+  </nav>
+    <center>             
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog ">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" >
+                <form  method="GET" >
+                  <div class="mb-2">
+                    <label for="recipient-name" class="col-form-label">Email:</label>
+                    <!-- <input type="email" class="form-control "   required> -->
+                    <input type="email" class="form-control" id="txtemail" name="txtemail">
+                    <label  class="form-label" id="errEmail">*</label>
+                  </div>
+                  <div class="mb-2">
+                    <label for="recipient-name" class="col-form-label">Password:</label>
+                    <input type="password" class="form-control" id="pwd" name="pwd" required>
+                    
+                  </div>
+                  <div class="mb-2">
+                    <label for="recipient-name" class="col-form-label">Type:</label>
+                    <select id="utype" name="utype" >
+                        <option value="select">select</option>
+                        <option value="Donor">Donor</option>
+                        <option value="Needy">Needy</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn1">Signup</button>
+             
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" >
+                  <form   method="GET" autocomplete="off">
+                    <div class="mb-2">
+                      <label for="recipient-name" class="col-form-label">Email:</label>
+                      <input type="text" class="form-control" id="lgemail" name="lgemail">
+                      
+                    </div>
+                    <div class="mb-2">
+                      <label for="recipient-name" class="col-form-label">Password:</label>
+                      <input type="password" class="form-control" id="lgpwd" name="lgpwd" value="">
+                      
+                    </div>
+                
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  id="btn">Login</button>
+               
+                </div>
+              </div>
+            </div>
+          </div>
+       
+    </center>
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="2000">
+          <img src="pics/yo1.jpg" height="600px" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+          <img src="pics/yo4.png" height="600px" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="pics/mma.jpg" height="600px" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+
+
+    <nav class="navbar bg-primary">
+      <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: white;">Our Services</span>
+      </div>
+    </nav>
+    <div class="container mt-5 d-flex justify-content-around">
+      <div class="card" style="width: 18rem;">
+        <img src="pics/u1.jfif" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Donate Med</h5>
+          <p class="card-text">You can donate your unused medicine so the one who needs it, can make a use of it before the expiry </p>
+          
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="pics/u2.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Get Medicine</h5>
+          <p class="card-text">You can get medicine directly from the donor and also from the one near your location</p>
+          
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="pics/u3.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Mission</h5>
+          <p class="card-text"> To relieve people from pain which can be cured from medicines which are available around them but they dont have proper way to acess them.</p>
+          
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+
+
+    <nav class="navbar bg-primary">
+      <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: white;">Reach us</span>
+      </div>
+    </nav>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4148.10983033553!2d76.35944978773274!3d30.354481470325876!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391028ab86533db5%3A0x93cc1f72eae1c9a8!2sThapar%20Institute%20of%20Engineering%20%26%20Technology%20(TIET)%2C%20Patiala!5e0!3m2!1sen!2sin!4v1658507668698!5m2!1sen!2sin"  width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    
+    <nav class="navbar bg-primary">
+      <div class="container-fluid justify-content-center">
+        <span class="navbar-brand mb-0 h1" style="font-size: 30px; color: white;">Meet The Developers</span>
+      </div>
+    </nav>
+
+  <div class="container mt-5 d-flex justify-content-around">
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="pics/me.jpeg" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Developed By:</h5>
+            <p>Name: Udhay Bansal</p>
+           <p> College: Thapar University</p>
+           <p>Sem: 5th</p>
+           <p>Email: udhaybansalldh@gmail.com</p>
+           <p>Contact: 9878936979</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="pics/Sir.jpeg" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Under The Guidance of</h5>
+            <p>Name: Rajesh Kumar Bansal</p>
+           <p> THE AUTHOR OF REAL JAVA</p>
+            <p>Email: bcebti@gmail.com </p>
+            <p>Contact : 98722-46056</p>
+             <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <nav class="navbar bg-primary opacity-75" >
+      <div class="container-fluid justify-content-center" >
+        <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+          <p>
+            <center><h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+            <!-- <span style="font-size: 10px; margin-top: -15px;"> -->
+              About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines | Affiliate Disclosure | Contact Us
+            <!-- </span> -->
+            <h6>
+              <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+              <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+            </h6>
+            </center>
+          </p>  
+        </span>
+      </div>
+    </nav>
+
+</body>
+
+
+</html>

@@ -1,0 +1,20 @@
+img{
+    /* width: 100px;
+    height: 100px; */
+    
+    border-radius: 100px;
+}
+
+
+.card{
+    float: left;
+    margin: auto;
+    margin-right: 20px;
+}
+
+.card-body{
+    
+    margin: auto;
+    margin-right: 20px;
+}
+

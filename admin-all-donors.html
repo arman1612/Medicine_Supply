@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="js/angular.min.js">   </script>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<script>
+    var moduleKuch = angular.module("myModule", []);
+    moduleKuch.controller("myController", function ($scope, $http) {
+        $scope.jsonAry = [];
+        $scope.fetchAllRecords2 = function () {
+            $http.get("/fetchAllRecords2").then(fxSuccess, function (response) {
+                alert(JSON.stringify(response.data));
+            });
+            function fxSuccess(response) {
+                //alert(JSON.stringify(response.data));
+                $scope.jsonAry = response.data;
+            }
+        }
+        $scope.dodelete = function (email, index) {
+            var url = "/delete-donor?email=" + email;
+            $http.get(url).then(fxAnmol, function (response) {
+                alert(response.data);
+            });
+            function fxAnmol(response) {
+                //alert(response.data);
+                $scope.fetchAllRecords2();
+            }
+        }
+    })
+</script>
+
+<body ng-app="myModule" ng-controller="myController" ng-init=fetchAllRecords2();>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid justify-content-center  ">
+            <a class="navbar-brand " href="#">
+                <h3><span style="color: white;">
+                    <img src="pics/logo5.png" style="height:30px; width: 30px; border-radius: 100px; " alt="">    ALL DONORS</h3>
+            </a>
+        </div>
+    </nav>
+    <center>
+        <label for="">
+            <h3>ALL DONORS</h3>
+        </label>
+    </center>
+
+    <center>
+        <table class="table table-dark">
+            <tr>
+                <th>Sr.No</th>
+                <th>Email</th>
+                <th>name</th>
+                <th>Mobile</th>
+                <th>Prooftype</th>
+                <th>Delete</th>
+            </tr>
+            <tr ng-repeat="obj in jsonAry">
+                <th scope="row">{{$index}}</th>
+                <td class="table-active">{{obj.email}}</td>
+                <td>{{obj.name}}</td>
+                <td>{{obj.mobile}}</td>
+                <td>{{obj.prooftype}}</td>
+                <td>
+                    <input type="button " class="btn btn-danger" value="Delete" ng-click="dodelete(obj.email,$index)" name="" id="">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </center>
+    <!-- <nav class="navbar bg-primary opacity-75"  style="position:fixed; bottom: 0; width: 100%;" >
+        <div class="container-fluid justify-content-center" >
+          <span class="navbar-brand mb-0 h1" style="font-size: 10px; color: white;">
+            <p>
+              <center><h6>copyright <i class="fa fa-copyright fa-1x" aria-hidden="true"></i> 2020-2024</h6>
+              <span style="font-size: 10px; margin-top: -15px;">
+                About | Privacy Policy | Cookie Policy | Update Consent | Terms & Conditions | Editorial Guidelines | Affiliate Disclosure | Contact Us
+              </span>
+              <h6>
+                <i class="fa fa-facebook-official fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-instagram fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-twitter-square fa-1x" aria-hidden="true"></i>
+                <i class="fa fa-linkedin-square fa-1x" aria-hidden="true"></i>
+              </h6>
+              </center>
+            </p>  
+          </span>
+        </div>
+      </nav> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>
